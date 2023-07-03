@@ -15,7 +15,7 @@ func GetAvailableChargingStations(c *gin.Context) {
 		return
 	}
 
-	if err := db.Where("status = ?", "available").Find(&chargingStations).Error; err != nil {
+	if err := db.Where("availability_time  > ?", time.Now()).Find(&chargingStations).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -32,7 +32,7 @@ func GetOccupiedChargingStations(c *gin.Context) {
 		return
 	
 		}else {
-		if err := db.Where("status = ?", "occupied").Find(&chargingStations).Error; err != nil {
+		if err := db.Where("availability_time  > ?", time.Now()).Find(&chargingStations).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
