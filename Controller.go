@@ -25,8 +25,6 @@ type ChargingStation struct {
 
     Type             string    `json:"type"`
 
-    Status           string    `json:"status"`
-
     AvailabilityTime time.Time `json:"time"`
 
 }
@@ -67,8 +65,7 @@ func AddChargingStation(c *gin.Context) {
         return
     }
 
-    chargingStation.Status = "available"
-    chargingStation.AvailabilityTime = time.Now()
+     chargingStation.AvailabilityTime = time.Now()
 
     // Check if the station ID already exists
     var existingStation ChargingStation
@@ -142,7 +139,7 @@ fmt.Println(batteryCapacity,currentCharge,energyOutput,station)
     chargingStartTime := time.Now() // Use current local time as the charging start time
  // Calculate the charging duration based on energy output and remaining charge
 
-    chargingDuration := time.Duration(remainingCharge/energyOutput) * time.Hour
+    chargingDuration := time.Duration(remainingCharge / energyOutput * float64(time.Hour))
 
     fmt.Println(chargingDuration)
 
@@ -204,7 +201,7 @@ fmt.Println(batteryCapacity,currentCharge,energyOutput,station)
     }
      c.JSON(http.StatusOK, response)
 
-    db.Model(&station).Update("status", "occupied")
+    
 
 }
 
