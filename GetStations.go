@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,7 +16,7 @@ func GetAvailableChargingStations(c *gin.Context) {
 		return
 	}
 
-	if err := db.Where("availability_time  > ?", time.Now()).Find(&chargingStations).Error; err != nil {
+	if err := db.Where("availability_time  <= ?", time.Now()).Find(&chargingStations).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
